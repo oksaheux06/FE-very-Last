@@ -18,8 +18,8 @@ export default class register extends Component {
       toast.error("Email Harus Di Masukkan")
       return;
     }
-    if(this.state.password.length <=5 || this.state.password.length > 15){
-      toast.error("Password Harus Berisi 6 hingga 15 character")
+    if(this.state.password.length <=5){
+      toast.error("Password Harus Berisi 8 character")
       return;
     }
     
@@ -34,7 +34,7 @@ export default class register extends Component {
       })
       
       .catch(error => {
-        // toast.error(error.response.data.data)
+        toast.error(error.response.data.data)
         // console.log(error.response)
       })
   }

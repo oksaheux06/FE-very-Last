@@ -2,9 +2,11 @@ import { NavbarDua, Footer, IklanProfile, Watchlist, Transaksi } from "@componen
 import React, { useEffect, useState } from 'react'
 import Aos from "aos";
 import api from "../../services/api";
+import Popup from 'reactjs-popup';
 
 const Profile = () => {
   const [profileData, setProfileData] = useState([])
+  const [wallet, setWallet] = useState([])
   Aos.init();
 
   const user =
@@ -19,9 +21,16 @@ const Profile = () => {
 
     }
   }
+  const postWallet = async () =>{
+    const response = await api.post(`api/topup/${user.user.userId}`,{
+      "wallet":wallet
+    })
+
+  }
+ 
   useEffect(() => {
     getData()
-  })
+  },[])
   return (
     <>
       <NavbarDua />
@@ -34,19 +43,29 @@ const Profile = () => {
           <p className="text-sm text-orange-600 text-center shadow-xl border-b-2">The Latest News Related To tocks</p>
           <div className="flex">
             <div className=" border-orange-600 divide-solid border-4 grid place-items-center bg-white mx-6 mt-3 h-80 rounded-lg w-full">
+            <Popup trigger={<button className="w-16 h-7 bg-orange-600 rounded-xl mt-3" >Topup</button>} position="botom center">
+                    <div className="bg-white rounded-md text-center block border">
+                      <p>Topup Nominal Anda</p>
+                      <p>{"332"+user.user.phoneNumber+"14"}</p>
+                      <input name="wallet" value={wallet} id="wallet" onChange={(e)=> setWallet (e.target.value)}/>                      <br/>
+                      <button className="bg-orange-600 w-12 mt-3" onClick={postWallet}>Kirim</button>
+                    </div>
+                  </Popup>
               <img
                 className=" w-36 h-36 rounded-full border mt-3 "
                 src={require("./img/account.png")}
                 alt="profileImg"
               />
-              <div className="flex place-items-center">
-                <img
-                  src={require("./img/wallet-fill.png")}
-                  alt="logo"
-                  className="w-7 h-7"
-                ></img>
-                <label> Rp. </label>
-                <p className=" text-black text-xl">{profileData.wallet}</p>
+              <div className="flex">
+                <div className="flex place-items-center">
+                  <img
+                    src={require("./img/wallet-fill.png")}
+                    alt="logo"
+                    className="w-7 h-7"
+                  ></img>
+                  <label> Rp. </label>
+                  <p className=" text-black text-xl">{profileData.wallet}</p>
+                </div>
               </div>
               <div className="flex place-items-center">
                 {/* Full Name */}

@@ -8,15 +8,22 @@ const Payment = () => {
   const [product, setProduct] = useState({});
   const params = useParams();
   const [harga, setHarga] = useState(0)
-  // const [wallet, setWallet] = useState({})
+  const [wallet, setWallet] = useState({})
 
   const userLocal =
     JSON.parse(localStorage.getItem(`user`));
-    const user=userLocal.user.wallet
-    console.log(user)
+    const user=userLocal.user.userId
+    // console.log(user)
   
-const fetchProduct = async (id) => {
-    try {
+    const getWallet = async ()=>{
+      const url = `api/user/${user}`;
+      const response = await api.get(url);
+      const payload = { ...response?.data};
+      setWallet(payload || {})
+      console.log(payload)
+    }
+const fetchProduct = async (id) => {  
+  try {
       const url = `api/product/${id}`;
       const response = await api.get(url);
       const payload = { ...response?.data };
@@ -28,13 +35,13 @@ const fetchProduct = async (id) => {
   };
   
   const buyProduct = async ()=>{ 
-    if(user > harga && user > product.minimumBuyAmount){
+    if(wallet.wallet > harga && wallet.wallet > product.minimumBuyAmount){
     const response = await api.post(`api/transaction`,{
       userId: userLocal.user.userId,
       productId: product.productId,
       amount: harga
     })
-    console.log(response)
+    // console.log(harga)
     //masih error buat sudah beli dia pindah ke list
     window.location.href = ('/listproduct')
    }else{
@@ -45,6 +52,7 @@ const fetchProduct = async (id) => {
   useEffect(() => {
     if (params.id) {
       fetchProduct(params.id);
+      getWallet()
     }
   }, [params.id]);
 

@@ -27,7 +27,7 @@ const Watchlist = () => {
   useEffect(() => {
     addWatchlist()
 
-  })
+  },[])
 
   return (
     <>
@@ -38,9 +38,8 @@ const Watchlist = () => {
         data-aos-easing="linear"
         data-aos-duration="500">
         {watch.map(product => (
-          <div key={product.productCode}>
-            <div onClick={() => navigate(`detailproduct/`)}>
-              <div onClick={() => navigate(`/detailproduct/` + product?.productId)}>
+          <div key={product.productId}>
+            <div onClick={() => navigate(`/detailproduct/`+product.productId)}>
               <div className='md:w-72 w-28 md:h-80 h-48 rounded-lg border shadow-xl bg-orange-500 border-slate-500 scale-100 md:hover:scale-105 text-center'>
                 <img src={require('./img/sick1.png')} className='md:w-40 w-16 ml-6 md:ml-14' alt='sick'></img>
                 <div className=' w-full md:h-32 h-12 '>
@@ -51,7 +50,6 @@ const Watchlist = () => {
                 </div>
               </div>
               </div>
-            </div>
           </div>
         ))}
       </div>
